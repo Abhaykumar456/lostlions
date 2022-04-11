@@ -7,21 +7,21 @@ class Scene extends React.Component {
     super(props);
     this.state = {};
   }
+  
 
   componentDidMount() {
     var Engine = Matter.Engine,
       Render = Matter.Render,
       World = Matter.World,
       Bodies = Matter.Bodies,
-      Mouse = Matter.Mouse,
-      MouseConstraint = Matter.MouseConstraint,
-      bounds = [],
+      Composite = Matter.Composite,
       cols = 11,
       rows = 9,
       height = 700,
       width = 600,
       plinkosize = 14,
-      particlesize = 10;
+      particlesize = 5,
+      count = 0;
     
     const boundryoptions = {
       density: 1,
@@ -48,6 +48,10 @@ class Scene extends React.Component {
 
     var engine = Engine.create({
       // positionIterations: 20
+    });
+
+    var composite = Composite.create({
+
     });
 
     var render = Render.create({
@@ -131,17 +135,24 @@ class Scene extends React.Component {
 
     Render.run(render);
 
-
     const button = document.getElementById('start')
     button.addEventListener('click', () => {
-      button.style.display = 'none',
-      World.add(engine.world, Bodies.circle(308, 5, particlesize, { restitution: .9 }));
+      //button.style.display = 'none',
+      for (let i = 0; i < 100; i ++) {
+      World.add(engine.world, Bodies.circle(Math.random() * 600, 5, particlesize, { restitution: .9 }));
+      }
+      for (let i = 0; i < Bodies.length; i += 1) {
+        count += 1;
+      };
+      document.getElementById('boldStuff').innerHTML = World.allBodies.length;
+
     });
+
   }
 
   render() {
     return (
-      <><div ref="scene" /><button id ="start">Play</button></>
+      <><div ref="scene" /><button id ="start">Play</button> <p>Total Bodies <b id='boldStuff'>0</b></p></>
     );
   }
 }

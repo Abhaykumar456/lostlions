@@ -10,6 +10,8 @@
   "dependencies": {
     "@headlessui/react": "^1.4.2",
     "@heroicons/react": "^1.0.5",
+    "@nfteyez/sol-rayz-react": "^0.10.2",
+    "@solana/spl-token": "^0.2.0",
     "@solana/wallet-adapter-base": "^0.9.3",
     "@solana/wallet-adapter-react": "^0.15.3",
     "@solana/wallet-adapter-react-ui": "^0.9.5",
@@ -26,7 +28,11 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "swr": "^1.2.2",
-    "zustand": "^3.6.9"
+    "zustand": "^3.6.9",
+    "@project-serum/anchor": "^0.19.1-beta.1",
+    "@solana/wallet-adapter-phantom": "^0.7.0",
+    "@solana/wallet-adapter-solflare": "^0.4.0",
+    "@solana/wallet-adapter-sollet": "^0.8.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.12.1",

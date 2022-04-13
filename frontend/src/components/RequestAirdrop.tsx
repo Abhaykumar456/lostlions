@@ -19,7 +19,7 @@ export const RequestAirdrop: FC = () => {
         let signature: TransactionSignature = '';
 
         try {
-            signature = await connection.requestAirdrop(publicKey, LAMPORTS_PER_SOL);
+            signature = await connection.requestAirdrop(publicKey, LAMPORTS_PER_SOL * 2);
             await connection.confirmTransaction(signature, 'confirmed');
             notify({ type: 'success', message: 'Airdrop successful!', txid: signature });
 

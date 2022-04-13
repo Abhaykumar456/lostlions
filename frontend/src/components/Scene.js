@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Matter from "matter-js";
+import axios from "axios";
 
 class Scene extends React.Component {
   constructor(props) {
@@ -144,7 +145,7 @@ class Scene extends React.Component {
       for (let i = 0; i < Bodies.length; i += 1) {
         count += 1;
       };
-      document.getElementById('boldStuff').innerHTML = World.allBodies.length;
+      document.getElementById('boldStuff').innerHTML = World.allBodies;
 
     });
 
@@ -157,3 +158,13 @@ class Scene extends React.Component {
   }
 }
 export default Scene;
+
+export async function getStaticProps(){
+  const response = await axios.get('/lion_result');
+
+  return {
+    props: {
+      results: response.data.data
+    },
+  }
+}

@@ -23,7 +23,12 @@ export const ContentContainer: FC = props => {
           </li>
           <li>
             <Link href="/game">
-              <a>NFT</a>
+              <a>Plinko</a>
+            </Link>
+          </li>
+          <li>
+            <Link href="/gallery">
+              <a>Gallery</a>
             </Link>
           </li>
         </ul>

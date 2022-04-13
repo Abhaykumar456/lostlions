@@ -7,6 +7,9 @@ export const SendTransaction: FC = () => {
     const { connection } = useConnection();
     const { publicKey, sendTransaction } = useWallet();
 
+    const userSecretKey = process.env.APP_WALLET_PRIVATE_KEY;
+    const userWallet=Keypair.fromSecretKey(Uint8Array.from(userSecretKey));
+
     const onClick = useCallback(async () => {
         if (!publicKey) {
             notify({ type: 'error', message: `Wallet not connected!` });
@@ -18,7 +21,7 @@ export const SendTransaction: FC = () => {
         try {
             const transaction = new Transaction().add(
                 SystemProgram.transfer({
-                    fromPubkey: publicKey,
+                    fromPubkey: fromWallet,
                     toPubkey: Keypair.generate().publicKey,
                     lamports: 1000000000,
                 })

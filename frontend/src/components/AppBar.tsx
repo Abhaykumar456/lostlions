@@ -3,9 +3,13 @@ import Link from "next/link";
 
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useAutoConnect } from '../contexts/AutoConnectProvider';
+import { useWallet } from '@solana/wallet-adapter-react';
+
 
 export const AppBar: FC = props => {
   const { autoConnect, setAutoConnect } = useAutoConnect();
+
+  const { publicKey } = useWallet();
 
   return (
     <div className="flex-none p-2">
@@ -53,12 +57,16 @@ export const AppBar: FC = props => {
             <Link href="/">
               <a className="btn btn-ghost btn-sm rounded-btn">Home</a>
             </Link>
-            <Link href="/game">
-              <a className="btn btn-ghost btn-sm rounded-btn">Plinko</a>
-            </Link>
-            <Link href="/gallery">
-              <a className="btn btn-ghost btn-sm rounded-btn">Gallery</a>
-            </Link>
+
+            {publicKey ? (
+              <>
+              <Link href="/game">
+                <a className="btn btn-ghost btn-sm rounded-btn">Plinko</a>
+              </Link><Link href="/gallery">
+                <a className="btn btn-ghost btn-sm rounded-btn">Gallery</a>
+              </Link>
+              </>
+              ) : null}
           </div>
         </div>
 

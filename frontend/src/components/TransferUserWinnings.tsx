@@ -3,12 +3,16 @@ import { Keypair, SystemProgram, Transaction, TransactionSignature } from '@sola
 import { FC, useCallback } from 'react';
 import { notify } from "../utils/notifications";
 
-export const SendTransaction: FC = () => {
+export const TransferUserWinnings: FC = () => {
     const { connection } = useConnection();
     const { publicKey, sendTransaction } = useWallet();
 
-    const userSecretKey = process.env.APP_WALLET_PRIVATE_KEY;
-    const userWallet=Keypair.fromSecretKey(Uint8Array.from(userSecretKey));
+    //App Wallet 
+    
+    let base58publicKey = new PublicKey('5xot9PVkphiX2adznghwrAuxGs2zeWisNSxMW6hU6Hkj');
+
+    const appwallet = [process.env.APP_WALLET_ADDRESS, process.env.APP_WALLET_PRIVATE_KEY];
+    const appPublicKey = process.env.APP_WALLET_PRIVATE_KEY;
 
     const onClick = useCallback(async () => {
         if (!publicKey) {
@@ -21,8 +25,8 @@ export const SendTransaction: FC = () => {
         try {
             const transaction = new Transaction().add(
                 SystemProgram.transfer({
-                    fromPubkey: fromWallet,
-                    toPubkey: Keypair.generate().publicKey,
+                    fromPubkey: publicKey,
+                    toPubkey: appPublicKey,
                     lamports: 1000000000,
                 })
             );
@@ -44,7 +48,7 @@ export const SendTransaction: FC = () => {
                 className="btn m-2 bg-gradient-to-r from-[#9945FF] to-[#14F195] hover:from-pink-500 hover:to-yellow-500 ..."
                 onClick={onClick} disabled={!publicKey}
             >
-                <span> Send Transaction </span>
+                <span> Transfer to APP WALLET Transaction </span>
             </button>
         </div>
     );

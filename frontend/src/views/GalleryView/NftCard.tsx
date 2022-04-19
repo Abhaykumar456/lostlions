@@ -17,7 +17,6 @@ export const NftCard: FC<Props> = ({
 }) => {
   const [fallbackImage, setFallbackImage] = useState(false);
   const { name, uri } = details?.data ?? {};
-
   const { data, error } = useSWR(
     // uri || url ? getMetaUrl(details) : null,
     uri,
@@ -28,7 +27,7 @@ export const NftCard: FC<Props> = ({
       revalidateOnReconnect: false,
     }
   );
-  // console.log("data", data);
+  //console.log("data", details?.mint);
 
   useEffect(() => {
     if (!error && !!data) {

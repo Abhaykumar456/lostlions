@@ -1,6 +1,9 @@
 import { FC } from 'react';
 import Link from "next/link";
+import { useWallet } from '@solana/wallet-adapter-react';
+
 export const ContentContainer: FC = props => {
+  const { publicKey } = useWallet();
 
   return (
     <div className="flex-1 drawer h-52">
@@ -21,16 +24,20 @@ export const ContentContainer: FC = props => {
               <a>Home</a>
             </Link>
           </li>
-          <li>
-            <Link href="/game">
-              <a>Plinko</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/gallery">
-              <a>Gallery</a>
-            </Link>
-          </li>
+          {publicKey ? (
+              <>
+              <li>
+                <Link href="/game">
+                  <a>Plinko</a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/gallery">
+                  <a>Gallery</a>
+                </Link>
+              </li>
+              </>
+              ) : null}
         </ul>
       </div>
     </div>

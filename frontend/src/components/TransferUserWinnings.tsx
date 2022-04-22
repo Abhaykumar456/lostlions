@@ -1,6 +1,6 @@
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
-import { Keypair, SystemProgram, Transaction, TransactionSignature } from '@solana/web3.js';
-import { FC, useCallback } from 'react';
+import { Keypair, SystemProgram, Transaction, TransactionSignature, PublicKey } from '@solana/web3.js';
+import { FC, useCallback, useState } from 'react';
 import { notify } from "../utils/notifications";
 
 export const TransferUserWinnings: FC = () => {
@@ -8,11 +8,8 @@ export const TransferUserWinnings: FC = () => {
     const { publicKey, sendTransaction } = useWallet();
 
     //App Wallet 
-    
-    let base58publicKey = new PublicKey('5xot9PVkphiX2adznghwrAuxGs2zeWisNSxMW6hU6Hkj');
-
+    const walletPublicKey = new PublicKey('BAGBvsytEciWZbFUDMuBCQsWXsYb55dDTpffFNNWFZFX');
     const appwallet = [process.env.APP_WALLET_ADDRESS, process.env.APP_WALLET_PRIVATE_KEY];
-    const appPublicKey = process.env.APP_WALLET_PRIVATE_KEY;
 
     const onClick = useCallback(async () => {
         if (!publicKey) {
@@ -26,7 +23,7 @@ export const TransferUserWinnings: FC = () => {
             const transaction = new Transaction().add(
                 SystemProgram.transfer({
                     fromPubkey: publicKey,
-                    toPubkey: appPublicKey,
+                    toPubkey: walletPublicKey,
                     lamports: 1000000000,
                 })
             );

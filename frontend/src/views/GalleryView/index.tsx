@@ -15,7 +15,7 @@ const walletPublicKey = "3EqUrFrjgABCWAnqMYjZ36GcktiwDtFdkNYwY6C6cDzy";
 
 export const GalleryView: FC = ({}) => {
   const { connection } = useConnection();
-  const [walletToParsePublicKey, setWalletToParsePublicKey] =
+  const setWalletToParsePublicKey =
     useState<string>(walletPublicKey);
   const { publicKey } = useWallet();
 
@@ -69,7 +69,7 @@ export const GalleryView: FC = ({}) => {
                       <Loader />
                     </div>
                   ) : (
-                    <NftList nfts={nfts} error={error} />
+                    <NftList nfts={nfts} />
                   )}
                 </div>
               </div>
@@ -91,16 +91,6 @@ const NftList = ({ nfts, error }: NftListProps) => {
     return null;
   }
 
-  const lions = [];
-
-  nfts?.forEach(nft => {
-    if (nft.mint?.includes('BtUrk6e6zZ9mRaSwyZxj99HizyKZLRn5DzfsU1CJ8Yi3')){
-      lions?.push(nft);
-    } 
-  });
-
-  console.log(lions);
-
   if (!nfts?.length) {
     return (
       <div className="text-center text-2xl pt-16">
@@ -117,6 +107,7 @@ const NftList = ({ nfts, error }: NftListProps) => {
     </div>
   );
 };
+
 
 const LionList = ({ nfts, error }: NftListProps) => {
   if (error) {

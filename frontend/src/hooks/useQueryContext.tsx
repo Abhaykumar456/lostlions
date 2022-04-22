@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router'
+import useRouter from 'next/router'
 import { EndpointTypes } from '../models/types'
 
 export default function useQueryContext() {

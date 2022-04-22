@@ -2,7 +2,9 @@
 import { FC } from "react";
 import { SignMessage } from '../../components/SignMessage';
 import { SendTransaction } from '../../components/SendTransaction';
-import { TransferUserWinnings } from '../../components/TransferUserWinnings'
+import { TransferUserWinnings } from '../../components/TransferUserWinnings';
+import { notify } from "../../utils/notifications";
+
 
 
 export const BasicsView: FC = ({ }) => {

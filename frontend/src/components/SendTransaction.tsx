@@ -2,10 +2,13 @@ import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { Keypair, SystemProgram, Transaction, TransactionSignature } from '@solana/web3.js';
 import { FC, useCallback } from 'react';
 import { notify } from "../utils/notifications";
+import { useRouter } from 'next/router'
+
 
 export const SendTransaction: FC = () => {
     const { connection } = useConnection();
     const { publicKey, sendTransaction } = useWallet();
+    const router = useRouter();
 
     const onClick = useCallback(async () => {
         if (!publicKey) {
@@ -41,7 +44,7 @@ export const SendTransaction: FC = () => {
                 className="btn m-2 bg-gradient-to-r from-[#9945FF] to-[#14F195] hover:from-pink-500 hover:to-yellow-500 ..."
                 onClick={onClick} disabled={!publicKey}
             >
-                <span> Send Transaction </span>
+                <span> Send Lion and Play </span>
             </button>
         </div>
     );

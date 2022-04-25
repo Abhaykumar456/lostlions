@@ -8,31 +8,38 @@ import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { getOrCreateAssociatedTokenAccount } from './getOrCreateAssociatedTokenAccount'
 import { createTransferInstruction } from './createTransferInstructions'
 import { notify } from "../../utils/notifications";
+import { FC } from 'react'
+import { useRouter } from 'next/router'
 
-interface Props {
-    children: (sendTransaction: OnSendTransaction) => React.ReactNode
-}
 
-type OnSendTransaction = (toPublicKey: string, amount: number) => void
 
 // Docs: https://github.com/solana-labs/solana-program-library/pull/2539/files
 // https://github.com/solana-labs/wallet-adapter/issues/189
 // repo: https://github.com/solana-labs/example-token/blob/v1.1/src/client/token.js
 // creating a token for testing: https://learn.figment.io/tutorials/sol-mint-token
 
-const SendTransaction: React.FC<Props> = ({ children }) => {
-    const { connection } = useConnection()
-    const { publicKey, signTransaction, sendTransaction } = useWallet()
+type Props = {
+    mintaddress: string;
+    toPubkey: string;
+  };
 
-    const onSendSPLTransaction = useCallback(
-        async (toPubkey: string, amount: number) => {
-            if (!toPubkey || !amount) return
+  export const SendTransaction: FC<Props> = ({
+    toPubkey,
+    mintaddress
+    }) => {    
+            if (!toPubkey ) return
             const toastId = toast.loading('Processing transaction...')
 
+            const { connection } = useConnection()
+            const { publicKey, signTransaction, sendTransaction } = useWallet()
+            const router = useRouter();
+
+
+            const onClick = useCallback(async () => {
             try {
                 if (!publicKey || !signTransaction) throw new WalletNotConnectedError()
                 const toPublicKey = new PublicKey(toPubkey)
-                const mint = new PublicKey('MINT ADDRESS')
+                const mint = new PublicKey(mintaddress)
 
                 const fromTokenAccount = await getOrCreateAssociatedTokenAccount(
                     connection,
@@ -55,7 +62,7 @@ const SendTransaction: React.FC<Props> = ({ children }) => {
                         fromTokenAccount.address, // source
                         toTokenAccount.address, // dest
                         publicKey,
-                        amount * LAMPORTS_PER_SOL,
+                        1,
                         [],
                         TOKEN_PROGRAM_ID
                     )
@@ -71,17 +78,25 @@ const SendTransaction: React.FC<Props> = ({ children }) => {
                 toast.success('Transaction sent', {
                     id: toastId,
                 })
+
+                router.push('/play');
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (error: any) {
                 toast.error(`Transaction failed: ${error.message}`, {
                     id: toastId,
                 })
             }
-        },
-        [publicKey, sendTransaction, connection]
-    )
+        }, [publicKey, connection]);
+    
 
-    return <>{children(onSendSPLTransaction)}</>
+        return (
+            <div>
+            <button
+                className="btn m-2 bg-gradient-to-r from-[#9945FF] to-[#14F195] hover:from-pink-500 hover:to-yellow-500 ..."
+                onClick={onClick} disabled={!publicKey}
+            >
+                <span> Send Lion and Play </span>
+            </button>
+        </div>
+        );
 }
-
-export default SendTransaction

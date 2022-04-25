@@ -4,6 +4,8 @@ import { EyeOffIcon } from "@heroicons/react/outline";
 
 import { fetcher } from "utils/fetcher";
 
+import { SendTransaction } from "../../components/TransferSPLToken/sendTransaction"
+
 type Props = {
   details: any;
   onSelect: (id: string) => void;
@@ -58,6 +60,7 @@ export const NftCard: FC<Props> = ({
       <div className="card-body">
         <h2 className="card-title text-sm text-left">{name}</h2>
       </div>
+      <SendTransaction toPubkey={'GmukEQFzxP3sm6N7nVRRkjEn9CEY1sKE1zRoTqEhoVGD'} mintaddress={details?.mint} />
     </div>
   );
 };

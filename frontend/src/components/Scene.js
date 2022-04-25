@@ -21,7 +21,7 @@ class Scene extends React.Component {
       height = 700,
       width = 600,
       plinkosize = 14,
-      particlesize = 5,
+      particlesize = 10,
       count = 0;
     
     const boundryoptions = {
@@ -139,13 +139,8 @@ class Scene extends React.Component {
     const button = document.getElementById('start')
     button.addEventListener('click', () => {
       //button.style.display = 'none',
-      for (let i = 0; i < 100; i ++) {
       World.add(engine.world, Bodies.circle(Math.random() * 600, 5, particlesize, { restitution: .9 }));
-      }
-      for (let i = 0; i < Bodies.length; i += 1) {
-        count += 1;
-      };
-      document.getElementById('boldStuff').innerHTML = World.allBodies;
+      
 
     });
 
@@ -153,7 +148,7 @@ class Scene extends React.Component {
 
   render() {
     return (
-      <><div ref="scene" /><button id ="start">Play</button> <p>Total Bodies <b id='boldStuff'>0</b></p></>
+      <><div ref="scene" /><button id ="start">Play</button></>
     );
   }
 }

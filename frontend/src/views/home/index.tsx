@@ -9,17 +9,17 @@ import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { PlayGameButton } from '../../components/PlayGameButton';
 import pkg from '../../../package.json';
 
-import jumbotron from "./index.module.css";
-
 // Store
 import useUserSOLBalanceStore from '../../stores/useUserSOLBalanceStore';
 
 export const HomeView: FC = ({ }) => {
+  
   const wallet = useWallet();
   const { connection } = useConnection();
 
   const balance = useUserSOLBalanceStore((s) => s.balance)
   const { getUserSOLBalance } = useUserSOLBalanceStore()
+
 
   useEffect(() => {
     if (wallet.publicKey) {
@@ -29,6 +29,7 @@ export const HomeView: FC = ({ }) => {
   }, [wallet.publicKey, connection, getUserSOLBalance])
 
   return (
+    
 
     <>
     <div className="py-12 overflow-y-hidden">
@@ -38,6 +39,7 @@ export const HomeView: FC = ({ }) => {
                     <h1 className="text-5xl pl-12 font-bold text-transparent bg-clip-text bg-gradient-to-tr from-[#FAD836] to-[#47833C]">
                       Lost Lions <span className='text-sm font-normal align-top text-slate-700'>v{pkg.version}</span>
                     </h1>
+                    
                     <h4 className="w-full max-w-md mx-auto text-center text-slate-300">
                       <p>Lost Lions breeding eligability generator</p>
                       Play for a chance to breed.

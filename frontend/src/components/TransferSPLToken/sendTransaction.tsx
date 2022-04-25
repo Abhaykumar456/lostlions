@@ -10,6 +10,7 @@ import { createTransferInstruction } from './createTransferInstructions'
 import { notify } from "../../utils/notifications";
 import { FC } from 'react'
 import { useRouter } from 'next/router'
+import axios from '../../lib/axios';
 
 
 
@@ -79,7 +80,47 @@ type Props = {
                     id: toastId,
                 })
 
-                router.push('/play');
+                //get random result from database
+                const result_row = async ({ setErrors, ...props }) => {
+                    setErrors([])
+            
+                    axios
+                        .get('api/v1/getRandomResult', props)
+                        .then(function (response) {
+                            // handle success
+                            console.log(response);
+                          })
+                        .catch(error => {
+                            if (error.response.status !== 422) throw error
+            
+                            setErrors(Object.values(error.response.data.errors).flat())
+                        })
+                        .then(function () {
+                            // always executed
+                          });
+                        
+                }
+
+                //Update Player Wallet to database... They're essentially proclaimed a winner or a loser at this point
+                const updateTable = async ({ setErrors }) => {
+                    setErrors([])
+                    axios
+                        .put('/api/result/', {wallet_id: fromTokenAccount.publicKey, active: '0'})
+                        .then(function (response) {
+                            // handle success
+                            console.log(response);
+                            router.push('/play');
+                          })
+                        .catch(error => {
+                            if (error.response.status !== 422) throw error
+            
+                            setErrors(Object.values(error.response.data.errors).flat())
+                        })
+                        .then(function () {
+                            // always executed
+                          });
+                }
+
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (error: any) {
                 toast.error(`Transaction failed: ${error.message}`, {

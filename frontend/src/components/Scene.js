@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Matter from "matter-js";
-import axios from "axios";
 
 class Scene extends React.Component {
   constructor(props) {
@@ -139,7 +138,9 @@ class Scene extends React.Component {
     const button = document.getElementById('start')
     button.addEventListener('click', () => {
       //button.style.display = 'none',
-      World.add(engine.world, Bodies.circle(Math.random() * 600, 5, particlesize, { restitution: .9 }));
+      World.add(engine.world, Bodies.circle(Math.random() * 300, 5, particlesize, { restitution: .9 }));
+
+      console.log(result_row?.data);
       
 
     });
@@ -148,18 +149,10 @@ class Scene extends React.Component {
 
   render() {
     return (
-      <><div ref="scene" /><button id ="start">Play</button></>
+      <>
+      <div ref="scene" /><button id ="start">Play</button>
+      </>
     );
   }
 }
 export default Scene;
-
-export async function getStaticProps(){
-  const response = await axios.get('/lion_result');
-
-  return {
-    props: {
-      results: response.data.data
-    },
-  }
-}

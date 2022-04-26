@@ -84,29 +84,20 @@ type Props = {
                 })
 
                 //get random result from database
-                var id, result;
-
-                await axios.get('api/v1/getRandomResult')
-                  .then(function (response) {
-                    id = response.data.id;
-                    result = response.data.result;
-                  })
-
-                //Update Player Wallet to database... They're essentially proclaimed a winner or a loser at this point
-                await axios.put('api/result/' + id, {
-                    wallet_id: fromTokenAccount.publicKey,
-                    active: 0
-                });
-
-                if (result == 0) {
-                    AppBurn(mintaddress);
-                    router.push('/play');
-                }
-                else if (result == 1) {
-                    SendBackToken(mintaddress);
-                    router.push('/play');
-                }
-                
+                //update entry and return result
+                getData(toPubkey)
+                .then(
+                    function(res) {
+                        if (res == 0) {
+                            AppBurn(mintaddress);
+                            router.push('/play');
+                        }
+                        else if (res == 1) {
+                            SendBackToken(mintaddress);
+                            router.push('/play');
+                        }
+                    }
+                );
 
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (error: any) {
@@ -128,3 +119,15 @@ type Props = {
         </div>
         );
 }
+
+async function getData(toPubkey) {
+    try {
+      const res = await axios.get('api/v1/updateRecord', { data: {wallet_id: toPubkey } });
+  
+      return res.data.result; 
+        // Don't forget to return something   
+    }
+    catch (err) {
+        console.error(err);
+    }
+  }

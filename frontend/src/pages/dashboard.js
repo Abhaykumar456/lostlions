@@ -1,7 +1,6 @@
 import AppLayout from '../components/Layouts/AppLayout'
 import Head from 'next/head'
 import { SeedDatabase } from '../components/SeedDatabase'
-import { axiosTest } from '../components/JsonTable'
 
 const Dashboard = () => {
     return (
@@ -22,7 +21,6 @@ const Dashboard = () => {
                         <div className="p-6 bg-white border-b border-gray-200 text-black">
                             You're logged in!
                             <SeedDatabase/>
-                            <axiosTest />
                         </div>
                     </div>
                 </div>

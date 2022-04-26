@@ -1,6 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Matter from "matter-js";
+import axios from "../lib/axios";
+import { useConnection, useWallet } from '@solana/wallet-adapter-react'
+
+const { connection } = useConnection()
+const { publicKey, signTransaction, sendTransaction } = useWallet()
+
+var PublicKey = publicKey?.toBase58();
 
 class Scene extends React.Component {
   constructor(props) {
@@ -137,8 +144,19 @@ class Scene extends React.Component {
 
     const button = document.getElementById('start')
     button.addEventListener('click', () => {
-      //button.style.display = 'none',
-      World.add(engine.world, Bodies.circle(428, 5, particlesize, { restitution: .9 }));
+
+      AddStartingPos()
+    .then(
+        function(res) {
+          if(res.active == '1'){
+            UpdateActive(res.id);
+            World.add(engine.world, Bodies.circle(res, 5, particlesize, { restitution: .9 }));
+          }
+          else {
+
+          }
+        }
+    );
 
       
 
@@ -148,10 +166,77 @@ class Scene extends React.Component {
 
   render() {
     return (
-      <>
-      <div ref="scene" /><button id ="start">Play</button>
-      </>
+      <div>
+        <div ref="scene" />
+        <button id ="start">Play</button>
+      </div>
     );
   }
 }
 export default Scene;
+
+
+function showResults() {
+  // initialize data state variable as an empty array
+  const [data, setData] = useState([]);
+
+  // make the fetch the first time your component mounts
+  useEffect(() => {
+    axios.get(`api/v1/getResultFromWallet/${PublicKey}`).then(response => setData(response.data));
+  }, []);
+
+  if (!data?.length) {
+      return (
+        <div className="text-center text-2xl pt-16 w-screen">
+          <p>No Results Yet</p>
+        </div>
+      );
+    }
+
+  return (
+    <div className='pt-12 w-screen'>
+        Results of Games Played (Wallet ID, Result, Time Of Play). 1 is Winner 0 is Loser for result
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Wallet ID</th>
+                <th>Result</th>
+                <th>Date</th>
+            </tr>
+        {data.map((row) => (
+        <tr key={row.id}>
+            <th> {row.id} </th>
+            <th> {row.wallet_id} </th> 
+            <th> {row.result}</th>
+            <th> {row.updated_at }</th>
+            </tr>
+      ))}
+
+        </table>
+    </div>
+  );
+}
+
+async function AddStartingPos() {
+  try {
+    const res = await axios.get(`api/v1/getResultFromWallet/${PublicKey}`);
+
+    return res.data; 
+      // Don't forget to return something   
+  }
+  catch (err) {
+      console.error(err);
+  }
+}
+
+async function UpdateActive(id) {
+  try {
+    const res = await axios.put(`api/result/${id}`);
+
+    return res.data.result; 
+      // Don't forget to return something   
+  }
+  catch (err) {
+      console.error(err);
+  }
+}

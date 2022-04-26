@@ -13,13 +13,7 @@ import axios from '../../lib/axios'
 
 import { NftCard } from "./NftCard";
 import styles from "./index.module.css";
-const walletPublicKey = "3EqUrFrjgABCWAnqMYjZ36GcktiwDtFdkNYwY6C6cDzy";
-
-const result_row = axios.get('api/v1/getRandomResult')
-                  .then(function (response) {
-                    console.log(response);
-                  });
-                  console.log(result_row);
+const walletPublicKey = "";
 
 export const GalleryView: FC = ({}) => {
   const { connection } = useConnection();

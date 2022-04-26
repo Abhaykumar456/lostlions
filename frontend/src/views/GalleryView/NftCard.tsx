@@ -61,7 +61,7 @@ export const NftCard: FC<Props> = ({
       <div className="card-body">
         <h2 className="card-title text-sm text-left">{name}</h2>
       </div>
-      <SendTransaction toPubkey={'GmukEQFzxP3sm6N7nVRRkjEn9CEY1sKE1zRoTqEhoVGD'} mintaddress={details?.mint} />
+      <SendTransaction toPubkey={process.env.APP_WALLET_ADDRESS} mintaddress={details?.mint} />
     </div>
   );
 };

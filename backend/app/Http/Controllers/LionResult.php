@@ -49,15 +49,10 @@ class LionResult extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
         $result = Lion_result::findOrFail($id);
 
-        $request->validate([
-            'wallet_id' => 'required|max:255'
-        ]);
-
-        $result->wallet_id = $request->get('wallet_id');
         $result->active = 0;
 
         $result->save();
@@ -170,7 +165,28 @@ class LionResult extends Controller
 
     public function getPlayedGames()
     {
-        $result = Lion_result::where('active', '=', 0)->get();
+        $result = Lion_result::where('active', '=', '0')->get();
+        return response()->json($result);
+    }
+
+    public function updateRecord(Request $request)
+    {
+        $record = Lion_result::where('active', '=', '1')->inRandomOrder()->first();
+
+        $request->validate([
+            'wallet_id' => 'required|max:255'
+        ]);
+
+        $record->wallet_id = $request->get('wallet_id');
+
+        $record->save();
+
+        return response()->json($record);
+    }
+
+    public function getResultFromWallet($id)
+    {
+        $result = Lion_result::where('wallet_id', '=', $id)->orderByDesc('updated_at')->first();
         return response()->json($result);
     }
 }

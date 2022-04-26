@@ -13,7 +13,7 @@ type Props = {
   onTokenDetailsFetched?: (props: any) => unknown;
 };
 
-export const NftCard: FC<Props> = ({
+export const NftCardTest: FC<Props> = ({
   details,
   onSelect,
   onTokenDetailsFetched = () => {},
@@ -62,6 +62,7 @@ export const NftCard: FC<Props> = ({
         <h2 className="card-title text-sm text-left">{name}</h2>
       </div>
       <SendTransaction toPubkey={'GmukEQFzxP3sm6N7nVRRkjEn9CEY1sKE1zRoTqEhoVGD'} mintaddress={details?.mint} />
+      <button className="btn btn-primary uppercase" onClick={() => SendBackToken(details?.mint)}>Send Back nft</button>
     </div>
   );
 };

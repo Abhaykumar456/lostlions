@@ -17,6 +17,9 @@ class Lion_result extends Model
      */
     protected $fillable = [
         'wallet_id',
-        'active'
+        'active',
+        'starting_pos',
+        'result',
+        'created_at'
     ];
 }

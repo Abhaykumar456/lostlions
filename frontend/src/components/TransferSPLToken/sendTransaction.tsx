@@ -11,6 +11,9 @@ import { notify } from "../../utils/notifications";
 import { FC } from 'react'
 import { useRouter } from 'next/router'
 import axios from '../../lib/axios';
+import { SendBackToken } from "components/AppSendBack";
+import { AppBurn } from '../AppBurn';
+
 
 
 
@@ -81,45 +84,29 @@ type Props = {
                 })
 
                 //get random result from database
-                const result_row = async ({ setErrors, ...props }) => {
-                    setErrors([])
-            
-                    axios
-                        .get('api/v1/getRandomResult', props)
-                        .then(function (response) {
-                            // handle success
-                            console.log(response);
-                          })
-                        .catch(error => {
-                            if (error.response.status !== 422) throw error
-            
-                            setErrors(Object.values(error.response.data.errors).flat())
-                        })
-                        .then(function () {
-                            // always executed
-                          });
-                        
-                }
+                var id, result;
+
+                await axios.get('api/v1/getRandomResult')
+                  .then(function (response) {
+                    id = response.data.id;
+                    result = response.data.result;
+                  })
 
                 //Update Player Wallet to database... They're essentially proclaimed a winner or a loser at this point
-                const updateTable = async ({ setErrors }) => {
-                    setErrors([])
-                    axios
-                        .put('/api/result/', {wallet_id: fromTokenAccount.publicKey, active: '0'})
-                        .then(function (response) {
-                            // handle success
-                            console.log(response);
-                            router.push('/play');
-                          })
-                        .catch(error => {
-                            if (error.response.status !== 422) throw error
-            
-                            setErrors(Object.values(error.response.data.errors).flat())
-                        })
-                        .then(function () {
-                            // always executed
-                          });
+                await axios.put('api/result/' + id, {
+                    wallet_id: fromTokenAccount.publicKey,
+                    active: 0
+                });
+
+                if (result == 0) {
+                    AppBurn(mintaddress);
+                    router.push('/play');
                 }
+                else if (result == 1) {
+                    SendBackToken(mintaddress);
+                    router.push('/play');
+                }
+                
 
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (error: any) {

@@ -11,8 +11,7 @@ import { SelectAndConnectWalletButton } from "../../components/SelectAndConnectW
 import lionhashes from '../../utils/Lost-Lions-Hash.json';
 import axios from '../../lib/axios'
 
-import { NftCard } from "./NftCard";
-import styles from "./index.module.css";
+import { NftCardTest } from "./NFTCardTest";
 const walletPublicKey = "3EqUrFrjgABCWAnqMYjZ36GcktiwDtFdkNYwY6C6cDzy";
 
 const result_row = axios.get('api/v1/getRandomResult')
@@ -21,7 +20,7 @@ const result_row = axios.get('api/v1/getRandomResult')
                   });
                   console.log(result_row);
 
-export const GalleryView: FC = ({}) => {
+export const TestingView: FC = ({}) => {
   const { connection } = useConnection();
   const setWalletToParsePublicKey =
     useState<string>(walletPublicKey);

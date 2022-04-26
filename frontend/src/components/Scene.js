@@ -138,9 +138,8 @@ class Scene extends React.Component {
     const button = document.getElementById('start')
     button.addEventListener('click', () => {
       //button.style.display = 'none',
-      World.add(engine.world, Bodies.circle(Math.random() * 300, 5, particlesize, { restitution: .9 }));
+      World.add(engine.world, Bodies.circle(428, 5, particlesize, { restitution: .9 }));
 
-      console.log(result_row?.data);
       
 
     });

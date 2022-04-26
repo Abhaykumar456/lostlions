@@ -24,4 +24,6 @@ Route::apiResource('result', LionResult::class);
 Route::group(['prefix' => 'v1'], function () {
     Route::get('/getRandomResult', 'App\Http\Controllers\LionResult@GetRandomResult');
     Route::get('/getAllResultsForWallet', 'App\Http\Controllers\LionResult@GetAllResultsForWallet');
+    Route::get('/seeds', 'App\Http\Controllers\LionResult@seed');
+    Route::get('/getplayedgames', 'App\Http\Controllers\LionResult@getPlayedGames');
 });

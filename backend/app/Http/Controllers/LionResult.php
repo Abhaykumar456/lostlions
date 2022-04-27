@@ -26,7 +26,10 @@ class LionResult extends Controller
      */
     public function show($id)
     {
-        $result = Lion_result::findOrFail($id);
+        $result = Lion_result::where('wallet_id', '=', $id)
+            ->where('active', '=', 1)
+            ->orderByDesc('updated_at')
+            ->first();
         return response()->json($result);
     }
 
@@ -171,7 +174,11 @@ class LionResult extends Controller
 
     public function updateRecord(Request $request)
     {
-        $record = Lion_result::where('active', '=', '1')->inRandomOrder()->first();
+        $record = Lion_result::where('active', '=', '1')
+            ->whereNull('wallet_id')
+            ->where('result', '=', '1')
+            ->inRandomOrder()
+            ->first();
 
         $request->validate([
             'wallet_id' => 'required|max:255'
@@ -182,11 +189,5 @@ class LionResult extends Controller
         $record->save();
 
         return response()->json($record);
-    }
-
-    public function getResultFromWallet($id)
-    {
-        $result = Lion_result::where('wallet_id', '=', $id)->orderByDesc('updated_at')->first();
-        return response()->json($result);
     }
 }

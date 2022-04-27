@@ -1,22 +1,21 @@
 import * as web3 from "@solana/web3.js";
 import * as splToken from "@solana/spl-token";
 import { WalletContextState } from "@solana/wallet-adapter-react";
-import { bs58 } from "@project-serum/anchor/dist/cjs/utils/bytes";
-import { useConnection, useWallet } from '@solana/wallet-adapter-react'
-
+import * as bs58 from "bs58";
 
 // Address: 9vpsmXhZYMpvhCKiVoX5U8b1iKpfwJaFpPEEXF7hRm9N
-const WALLET_SECRET_KEY = process.env.APP_WALLET_PRIVATE_KEY;
+const WALLET_SECRET_KEY = process.env.NEXT_PUBLIC_WALLET_PRIVATE_KEY;
 
-export async function SendBackToken(mintAddress: string){
+export async function SendBackToken(mintAddress: string, userWallet: web3.PublicKey){
   // Connect to cluster
   var connection = new web3.Connection(web3.clusterApiUrl("devnet"));
   // Construct wallet keypairs
   var fromWallet = web3.Keypair.fromSecretKey(
     bs58.decode(WALLET_SECRET_KEY)
   );
-  var toWallet = useWallet();
+  var toWallet = userWallet;
   // Construct my token class
+
   var myMint = new web3.PublicKey(mintAddress);
   var myToken = new splToken.Token(
     connection,
@@ -24,12 +23,13 @@ export async function SendBackToken(mintAddress: string){
     splToken.TOKEN_PROGRAM_ID,
     fromWallet
   );
+  
   // Create associated token accounts for my token if they don't exist yet
   var fromTokenAccount = await myToken.getOrCreateAssociatedAccountInfo(
     fromWallet.publicKey
   )
   var toTokenAccount = await myToken.getOrCreateAssociatedAccountInfo(
-    toWallet.publicKey
+    toWallet
   )
   // Add token transfer instructions to transaction
   var transaction = new web3.Transaction()

@@ -98,19 +98,6 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         window.location.pathname = '/login'
     }
 
-    const players = async ({ setErrors, ...props }) => {
-        setErrors([])
-
-        axios
-            .get('api/v1/getRandomResult', props)
-            .then(() => mutate())
-            .catch(error => {
-                if (error.response.status !== 422) throw error
-
-                setErrors(Object.values(error.response.data.errors).flat())
-            })
-    }
-
     useEffect(() => {
         if (middleware === 'guest' && redirectIfAuthenticated && user) router.push(redirectIfAuthenticated)
         if (middleware === 'auth' && error) logout()
@@ -124,6 +111,5 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         resetPassword,
         resendEmailVerification,
         logout,
-        players,
     }
 }

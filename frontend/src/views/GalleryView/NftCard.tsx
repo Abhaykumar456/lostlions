@@ -7,6 +7,10 @@ import { fetcher } from "utils/fetcher";
 
 import { SendTransaction } from "../../components/TransferSPLToken/sendTransaction"
 
+const AppWallet = process.env.NEXT_PUBLIC_WALLET_PUBLIC_KEY;
+
+console.log(AppWallet)
+
 type Props = {
   details: any;
   onSelect: (id: string) => void;
@@ -61,7 +65,8 @@ export const NftCard: FC<Props> = ({
       <div className="card-body">
         <h2 className="card-title text-sm text-left">{name}</h2>
       </div>
-      <SendTransaction toPubkey={process.env.APP_WALLET_ADDRESS} mintaddress={details?.mint} />
+      <SendTransaction toPubkey={AppWallet} mintaddress={details?.mint} />
+      console.log(details?.mint)
     </div>
   );
 };

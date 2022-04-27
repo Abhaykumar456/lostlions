@@ -9,7 +9,6 @@ export const TransferUserWinnings: FC = () => {
 
     //App Wallet 
     const walletPublicKey = new PublicKey('BAGBvsytEciWZbFUDMuBCQsWXsYb55dDTpffFNNWFZFX');
-    const appwallet = [process.env.APP_WALLET_ADDRESS, process.env.APP_WALLET_PRIVATE_KEY];
 
     const onClick = useCallback(async () => {
         if (!publicKey) {

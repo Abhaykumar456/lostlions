@@ -2,21 +2,15 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Matter from "matter-js";
 import axios from "../lib/axios";
-import { useConnection, useWallet } from '@solana/wallet-adapter-react'
+import { useEffect, useState } from "react";
 
-const { connection } = useConnection()
-const { publicKey, signTransaction, sendTransaction } = useWallet()
-
-var PublicKey = publicKey?.toBase58();
 
 class Scene extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-  
+
+
 
   componentDidMount() {
+
     var Engine = Matter.Engine,
       Render = Matter.Render,
       World = Matter.World,
@@ -145,15 +139,15 @@ class Scene extends React.Component {
     const button = document.getElementById('start')
     button.addEventListener('click', () => {
 
-      AddStartingPos()
+    AddStartingPos(publickey)
     .then(
         function(res) {
-          if(res.active == '1'){
+          if(res && res.active == '1'){
             UpdateActive(res.id);
             World.add(engine.world, Bodies.circle(res, 5, particlesize, { restitution: .9 }));
           }
           else {
-
+            
           }
         }
     );
@@ -162,19 +156,45 @@ class Scene extends React.Component {
 
     });
 
-  }
+  };
 
   render() {
     return (
       <div>
         <div ref="scene" />
-        <button id ="start">Play</button>
+        <button className="" id ="start">Play</button>
       </div>
     );
   }
 }
 export default Scene;
 
+async function AddStartingPos(UserPublicKey) {
+  try {
+
+    const res = await axios.get(`api/v1/getResultFromWallet/${UserPublicKey}`);
+
+    console.log(res.data)
+
+    return res.data; 
+      // Don't forget to return something   
+  }
+  catch (err) {
+      console.error(err);
+  }
+}
+
+async function UpdateActive(id) {
+  try {
+    const res = await axios.put(`api/result/${id}`);
+
+    return res.data.result; 
+      // Don't forget to return something   
+  }
+  catch (err) {
+      console.error(err);
+  }
+}
 
 function showResults() {
   // initialize data state variable as an empty array
@@ -182,7 +202,7 @@ function showResults() {
 
   // make the fetch the first time your component mounts
   useEffect(() => {
-    axios.get(`api/v1/getResultFromWallet/${PublicKey}`).then(response => setData(response.data));
+    axios.get(`api/v1/getResultFromWallet/${UserPublicKey}`).then(response => setData(response.data));
   }, []);
 
   if (!data?.length) {
@@ -215,28 +235,4 @@ function showResults() {
         </table>
     </div>
   );
-}
-
-async function AddStartingPos() {
-  try {
-    const res = await axios.get(`api/v1/getResultFromWallet/${PublicKey}`);
-
-    return res.data; 
-      // Don't forget to return something   
-  }
-  catch (err) {
-      console.error(err);
-  }
-}
-
-async function UpdateActive(id) {
-  try {
-    const res = await axios.put(`api/result/${id}`);
-
-    return res.data.result; 
-      // Don't forget to return something   
-  }
-  catch (err) {
-      console.error(err);
-  }
 }

@@ -37,6 +37,7 @@ type Props = {
             const { connection } = useConnection()
             const { publicKey, signTransaction, sendTransaction } = useWallet()
             const router = useRouter();
+            const userPub = publicKey?.toBase58()
 
 
             const onClick = useCallback(async () => {
@@ -85,15 +86,15 @@ type Props = {
 
                 //get random result from database
                 //update entry and return result
-                getData(toPubkey)
+                getData(userPub)
                 .then(
                     function(res) {
                         if (res == 0) {
-                            AppBurn(mintaddress);
+                            //AppBurn(mintaddress);
                             router.push('/play');
                         }
                         else if (res == 1) {
-                            SendBackToken(mintaddress);
+                            SendBackToken(mintaddress, publicKey);
                             router.push('/play');
                         }
                     }
@@ -120,9 +121,9 @@ type Props = {
         );
 }
 
-async function getData(toPubkey) {
+async function getData(userpubkey: string) {
     try {
-      const res = await axios.get('api/v1/updateRecord', { data: {wallet_id: toPubkey } });
+      const res = await axios.put('api/v1/updateRecord', { wallet_id: userpubkey });
   
       return res.data.result; 
         // Don't forget to return something   

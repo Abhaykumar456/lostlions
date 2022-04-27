@@ -2,13 +2,11 @@ import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { Keypair, SystemProgram, Transaction, TransactionSignature } from '@solana/web3.js';
 import { FC, useCallback } from 'react';
 import { notify } from "../utils/notifications";
-import { useRouter } from 'next/router'
 
 
 export const SendTransaction: FC = () => {
     const { connection } = useConnection();
     const { publicKey, sendTransaction } = useWallet();
-    const router = useRouter();
 
     const onClick = useCallback(async () => {
         if (!publicKey) {

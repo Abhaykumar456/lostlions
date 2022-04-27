@@ -27,5 +27,4 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/seeds', 'App\Http\Controllers\LionResult@seed');
     Route::get('/getplayedgames', 'App\Http\Controllers\LionResult@getPlayedGames');
     Route::put('/updateRecord', 'App\Http\Controllers\LionResult@updateRecord');
-    Route::get('/getResultFromWallet/{$id}', 'App\Http\Controllers\LionResult@getResultFromWallet');
 });

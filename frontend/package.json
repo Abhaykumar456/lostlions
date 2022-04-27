@@ -36,6 +36,7 @@
     "react-dom": "^17.0.2",
     "react-hot-toast": "^2.2.0",
     "react-json-to-html": "^0.0.6",
+    "reactjs-popup": "^2.0.5",
     "swr": "^1.2.2",
     "zustand": "^3.6.9"
   },

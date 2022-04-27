@@ -6,7 +6,7 @@ import { bs58 } from '@project-serum/anchor/dist/cjs/utils/bytes';
 import * as web3 from "@solana/web3.js";
 import { sign } from 'crypto';
 
-const WALLET_SECRET_KEY = process.env.APP_WALLET_PRIVATE_KEY;
+const WALLET_SECRET_KEY = process.env.NEXT_PUBLIC_WALLET_PRIVATE_KEY;
 
 export async function AppBurn(tokenMintAddress: string) {
     try {

@@ -11,8 +11,8 @@ import { notify } from "../../utils/notifications";
 import { FC } from 'react'
 import { useRouter } from 'next/router'
 import axios from '../../lib/axios';
-import { SendBackToken } from "components/AppSendBack";
 import { AppBurn } from '../AppBurn';
+import { die } from 'immer/dist/internal'
 
 
 
@@ -31,6 +31,18 @@ type Props = {
     toPubkey,
     mintaddress
     }) => {    
+
+            hasWon(mintaddress)
+            .then(
+                
+                function(res) {
+                    if (res !== undefined) {
+                        (document.getElementById("send") as HTMLButtonElement).disabled = true;
+                        (document.getElementById("send") as HTMLButtonElement).innerHTML = 'WINNER';
+                        return <h1>WINNER</h1>
+                    }
+                }
+            );
             if (!toPubkey ) return
             const toastId = toast.loading('Processing transaction...')
 
@@ -39,8 +51,16 @@ type Props = {
             const router = useRouter();
             const userPub = publicKey?.toBase58()
 
-
             const onClick = useCallback(async () => {
+                hasWon(mintaddress)
+                .then(
+                    
+                    function(res) {
+                        if (res !== undefined) {
+                            throw new Error("Invalid Request");
+                        }
+                    }
+                );
             try {
                 if (!publicKey || !signTransaction) throw new WalletNotConnectedError()
                 const toPublicKey = new PublicKey(toPubkey)
@@ -86,7 +106,7 @@ type Props = {
 
                 //get random result from database
                 //update entry and return result
-                getData(userPub)
+                getData(userPub, mintaddress)
                 .then(
                     function(res) {
                         if (res == 0) {
@@ -94,8 +114,11 @@ type Props = {
                             router.push('/play');
                         }
                         else if (res == 1) {
-                            SendBackToken(mintaddress, publicKey);
+                            //SendBackToken(mintaddress, publicKey);
                             router.push('/play');
+                        }
+                        else {
+                            router.push('/error')
                         }
                     }
                 );
@@ -113,7 +136,7 @@ type Props = {
             <div>
             <button
                 className="btn m-2 bg-gradient-to-r from-[#9945FF] to-[#14F195] hover:from-pink-500 hover:to-yellow-500 ..."
-                onClick={onClick} disabled={!publicKey}
+                onClick={onClick} disabled={!publicKey} id="send"
             >
                 <span> Send Lion and Play </span>
             </button>
@@ -121,11 +144,23 @@ type Props = {
         );
 }
 
-async function getData(userpubkey: string) {
+async function getData(userpubkey: string, mintaddress: string) {
     try {
-      const res = await axios.put('api/v1/updateRecord', { wallet_id: userpubkey });
+      const res = await axios.put('api/v1/updateRecord', { wallet_id: userpubkey, mint_address: mintaddress});
   
       return res.data.result; 
+        // Don't forget to return something   
+    }
+    catch (err) {
+        console.error(err);
+    }
+  }
+
+  async function hasWon(mintaddress: string) {
+    try {
+      const res = await axios.get(`api/winningLion/${mintaddress}`);
+  
+      return res.data.mint_address; 
         // Don't forget to return something   
     }
     catch (err) {

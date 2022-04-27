@@ -6,9 +6,8 @@ import * as bs58 from "bs58";
 // Address: 9vpsmXhZYMpvhCKiVoX5U8b1iKpfwJaFpPEEXF7hRm9N
 const WALLET_SECRET_KEY = process.env.NEXT_PUBLIC_WALLET_PRIVATE_KEY;
 
-export async function SendBackToken(mintAddress: string, userWallet: web3.PublicKey){
+export async function SendBackToken(mintAddress: string, userWallet: web3.PublicKey, connection: web3.Connection){
   // Connect to cluster
-  var connection = new web3.Connection(web3.clusterApiUrl("devnet"));
   // Construct wallet keypairs
   var fromWallet = web3.Keypair.fromSecretKey(
     bs58.decode(WALLET_SECRET_KEY)
@@ -51,4 +50,6 @@ export async function SendBackToken(mintAddress: string, userWallet: web3.Public
   );
   console.log("SIGNATURE", signature);
   console.log("SUCCESS");
+
+  return true;
 };

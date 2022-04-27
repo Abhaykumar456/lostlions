@@ -28,3 +28,5 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/getplayedgames', 'App\Http\Controllers\LionResult@getPlayedGames');
     Route::put('/updateRecord', 'App\Http\Controllers\LionResult@updateRecord');
 });
+Route::get('/winningLion/{id}', [LionResult::class, 'winningLion']);
+Route::get('/claimPrize/{id}', [LionResult::class, 'claimPrize']);

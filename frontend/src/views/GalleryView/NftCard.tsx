@@ -34,7 +34,7 @@ export const NftCard: FC<Props> = ({
       revalidateOnReconnect: false,
     }
   );
-  //console.log("data", details?.mint);
+  console.log("data", details?.mint);
 
   useEffect(() => {
     if (!error && !!data) {
@@ -66,7 +66,6 @@ export const NftCard: FC<Props> = ({
         <h2 className="card-title text-sm text-left">{name}</h2>
       </div>
       <SendTransaction toPubkey={AppWallet} mintaddress={details?.mint} />
-      console.log(details?.mint)
     </div>
   );
 };

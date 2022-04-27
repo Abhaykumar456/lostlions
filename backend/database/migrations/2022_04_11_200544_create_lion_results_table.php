@@ -17,9 +17,11 @@ class CreateLionResultsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('wallet_id')->nullable();
+            $table->string('mint_address')->nullable();
             $table->integer('starting_pos');
             $table->boolean('active')->default(1);
             $table->integer('result');
+            $table->boolean('payoutsuccess')->default(0);
         });
     }
 

@@ -112,7 +112,7 @@ const LionList = ({ nfts, error }: NftListProps) => {
     <><h1>LostLions in your wallet</h1>
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 items-start">
       {nfts?.map((nft) => (     
-        <NftCard key={nft.mint} details={nft} onSelect={() => {}} />
+        <NftCard key={nft.mint} details={nft} onSelect={() => {}} /> //devnet
       ))}
     </div></>
   );

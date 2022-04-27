@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Engine, Render, Bodies, World } from 'matter-js'
 import axios from 'lib/axios'
-import { useWallet } from '@solana/wallet-adapter-react'
+import { useWallet, useConnection } from '@solana/wallet-adapter-react'
 import { useRouter } from 'next/router'
+import { SendBackToken } from './AppSendBack'
 
 function Comp (props) {
   const scene = useRef()
@@ -240,7 +241,7 @@ async function AddStartingPos(UserPublicKey: string) {
       }
       else {
         window.alert("Congratulations!\nCheck your wallet for your new attribute!");
-        window.location.href='/game';
+        window.location.href='/claimLion';
         return (
                 <div> </div>
           );

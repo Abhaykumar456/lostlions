@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Lion_result;
 use Illuminate\Http\Request;
 
+use function PHPUnit\Framework\isEmpty;
+
 class LionResult extends Controller
 {
     /**
@@ -176,18 +178,46 @@ class LionResult extends Controller
     {
         $record = Lion_result::where('active', '=', '1')
             ->whereNull('wallet_id')
-            ->where('result', '=', '1')
+            ->whereNull('mint_address')
+            ->where('result', '=', '1') //devnet
             ->inRandomOrder()
             ->first();
 
         $request->validate([
-            'wallet_id' => 'required|max:255'
+            'wallet_id' => 'required|max:255',
+            'mint_address' => 'required|max:255'
         ]);
 
+        $repeatLion = Lion_result::where('mint_address', '=', $record->mint_address)
+            ->first();
+
+        if (!isEmpty($repeatLion)) {
+            return false;
+        };
+
         $record->wallet_id = $request->get('wallet_id');
+        $record->mint_address = $request->get('mint_address');
 
         $record->save();
 
         return response()->json($record);
+    }
+
+    public function winningLion($id)
+    {
+        $result = Lion_result::where('mint_address', '=', $id)
+            ->where('result', '=', 1)
+            ->orderByDesc('updated_at')
+            ->first();
+        return response()->json($result);
+    }
+
+    public function claimPrize($id)
+    {
+        $result = Lion_result::where('wallet_id', '=', $id)
+            ->where('result', '=', 1)
+            ->where('active', '=', 0)
+            ->first();
+        return response()->json($result);
     }
 }

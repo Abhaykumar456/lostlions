@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Lion_result;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+
 
 use function PHPUnit\Framework\isEmpty;
 

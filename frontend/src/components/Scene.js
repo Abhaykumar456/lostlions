@@ -213,26 +213,5 @@ function showResults() {
       );
     }
 
-  return (
-    <div className='pt-12 w-screen'>
-        Results of Games Played (Wallet ID, Result, Time Of Play). 1 is Winner 0 is Loser for result
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Wallet ID</th>
-                <th>Result</th>
-                <th>Date</th>
-            </tr>
-        {data.map((row) => (
-        <tr key={row.id}>
-            <th> {row.id} </th>
-            <th> {row.wallet_id} </th> 
-            <th> {row.result}</th>
-            <th> {row.updated_at }</th>
-            </tr>
-      ))}
-
-        </table>
-    </div>
-  );
+  return ( <p>data.length</p>);
 }

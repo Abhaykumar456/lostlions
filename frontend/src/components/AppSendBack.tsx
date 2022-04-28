@@ -42,14 +42,16 @@ export async function SendBackToken(mintAddress: string, userWallet: web3.Public
         1
       )
     );
+
   // Sign transaction, broadcast, and confirm
-  var signature = await web3.sendAndConfirmTransaction(
-    connection,
-    transaction,
-    [fromWallet]
-  );
+
+    var signature = await web3.sendAndConfirmTransaction(
+      connection,
+      transaction,
+      [fromWallet]
+    );
   console.log("SIGNATURE", signature);
   console.log("SUCCESS");
 
-  return true;
+  return signature;
 };

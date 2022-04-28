@@ -6,10 +6,10 @@ import { SendBackToken } from "components/AppSendBack";
 import { fetcher } from "utils/fetcher";
 
 import { SendTransaction } from "../../components/TransferSPLToken/sendTransaction"
+import axios from "lib/axios";
+import { SystemInstruction } from "@solana/web3.js";
 
 const AppWallet = process.env.NEXT_PUBLIC_WALLET_PUBLIC_KEY;
-
-console.log(AppWallet)
 
 type Props = {
   details: any;
@@ -34,7 +34,6 @@ export const NftCard: FC<Props> = ({
       revalidateOnReconnect: false,
     }
   );
-  console.log("data", details?.mint);
 
   useEffect(() => {
     if (!error && !!data) {
@@ -44,6 +43,17 @@ export const NftCard: FC<Props> = ({
 
   const onImageError = () => setFallbackImage(true);
   const { image } = data ?? {};
+
+  hasWon(details?.mint)
+      .then( 
+          function(res) {
+              if (res !== undefined) {
+                console.log(details)
+                document.getElementById(details?.mint).style.display = 'none';
+                document.getElementById(name).style.display = 'block';
+              }
+          }
+      );
 
   return (
     <div className={`card bordered max-w-xs compact rounded-md`}>
@@ -62,10 +72,25 @@ export const NftCard: FC<Props> = ({
           </div>
         )}
       </figure>
-      <div className="card-body">
+      <div className="card-body" id={details?.mint}>
         <h2 className="card-title text-sm text-left">{name}</h2>
+        <SendTransaction toPubkey={AppWallet} mintaddress={details?.mint} />
       </div>
-      <SendTransaction toPubkey={AppWallet} mintaddress={details?.mint} />
+      <div id={name} style={{display: 'none' }}>
+          <h1>WINNER</h1>
+      </div>
     </div>
   );
 };
+
+async function hasWon(mintaddress: string) {
+  try {
+    const res = await axios.get(`api/winningLion/${mintaddress}`);
+
+    return res.data.mint_address; 
+      // Don't forget to return something   
+  }
+  catch (err) {
+      console.error(err);
+  }
+}

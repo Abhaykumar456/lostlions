@@ -4,9 +4,11 @@ import { FC, useCallback } from 'react';
 import { notify } from "../utils/notifications";
 
 
+
 export const SendTransaction: FC = () => {
     const { connection } = useConnection();
     const { publicKey, sendTransaction } = useWallet();
+
 
     const onClick = useCallback(async () => {
         if (!publicKey) {

@@ -206,9 +206,10 @@ class LionResult extends Controller
     public function winningLion($id)
     {
         $result = Lion_result::where('mint_address', '=', $id)
-            ->where('result', '=', 1)
+            ->where('result', '=', '1')
             ->orderByDesc('updated_at')
             ->first();
+
         return response()->json($result);
     }
 
@@ -217,7 +218,20 @@ class LionResult extends Controller
         $result = Lion_result::where('wallet_id', '=', $id)
             ->where('result', '=', 1)
             ->where('active', '=', 0)
+            ->orderByDesc('updated_at')
             ->first();
+        return response()->json($result);
+    }
+
+    public function lionReturned($id)
+    {
+        $result = Lion_result::where('mint_address', '=', $id)
+            ->first();
+
+        $result->payoutsuccess = 1;
+
+        $result->save();
+
         return response()->json($result);
     }
 }

@@ -30,3 +30,4 @@ Route::group(['prefix' => 'v1'], function () {
 });
 Route::get('/winningLion/{id}', [LionResult::class, 'winningLion']);
 Route::get('/claimPrize/{id}', [LionResult::class, 'claimPrize']);
+Route::put('/lionReturned/{id}', [LionResult::class, 'lionReturned']);

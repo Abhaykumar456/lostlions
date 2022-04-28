@@ -12,10 +12,6 @@ import { FC } from 'react'
 import { useRouter } from 'next/router'
 import axios from '../../lib/axios';
 import { AppBurn } from '../AppBurn';
-import { die } from 'immer/dist/internal'
-
-
-
 
 // Docs: https://github.com/solana-labs/solana-program-library/pull/2539/files
 // https://github.com/solana-labs/wallet-adapter/issues/189
@@ -32,18 +28,8 @@ type Props = {
     mintaddress
     }) => {    
 
-            hasWon(mintaddress)
-            .then(
-                
-                function(res) {
-                    if (res !== undefined) {
-                        (document.getElementById("send") as HTMLButtonElement).disabled = true;
-                        (document.getElementById("send") as HTMLButtonElement).innerHTML = 'WINNER';
-                        return <h1>WINNER</h1>
-                    }
-                }
-            );
             if (!toPubkey ) return
+
             const toastId = toast.loading('Processing transaction...')
 
             const { connection } = useConnection()
@@ -52,15 +38,7 @@ type Props = {
             const userPub = publicKey?.toBase58()
 
             const onClick = useCallback(async () => {
-                hasWon(mintaddress)
-                .then(
-                    
-                    function(res) {
-                        if (res !== undefined) {
-                            throw new Error("Invalid Request");
-                        }
-                    }
-                );
+
             try {
                 if (!publicKey || !signTransaction) throw new WalletNotConnectedError()
                 const toPublicKey = new PublicKey(toPubkey)
@@ -149,18 +127,6 @@ async function getData(userpubkey: string, mintaddress: string) {
       const res = await axios.put('api/v1/updateRecord', { wallet_id: userpubkey, mint_address: mintaddress});
   
       return res.data.result; 
-        // Don't forget to return something   
-    }
-    catch (err) {
-        console.error(err);
-    }
-  }
-
-  async function hasWon(mintaddress: string) {
-    try {
-      const res = await axios.get(`api/winningLion/${mintaddress}`);
-  
-      return res.data.mint_address; 
         // Don't forget to return something   
     }
     catch (err) {

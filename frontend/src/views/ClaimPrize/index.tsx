@@ -8,6 +8,7 @@ import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 // Components
 import { ClaimLionButton } from '../../components/ClaimLionButton';
 import axios from 'lib/axios';
+import { notify } from 'utils/notifications';
 
 
 
@@ -18,49 +19,33 @@ export const ClaimPrize: FC = ({ }) => {
 
   useEffect(() => {
 
-    hasWon(publicKey?.toBase58())
-            .then(
-                
-                function(res) {
-                    if (res !== undefined) {
-                        
-                    }
-                }
-            );
-
   })
 
   return (
     
 
     <>
-    <div className="py-12 overflow-y-hidden">
-            {/* Code block starts */} 
-                <div>
-                    <div className="relative rounded-lg container mx-auto flex flex-col items-center z-50">
-                    <h4 className="w-full max-w-md mx-auto text-center text-slate-300">
-                      Claim your new breedable Lion
-                    </h4>
+<div>
+                    <div className="pt-48 relative rounded-lg container mx-auto flex flex-col items-center z-50">
+                    <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-tr from-[#FAD836] to-[#47833C]">
+                    WINNER <span className='text-sm font-normal align-top text-slate-700'></span>
+                    </h1>
+                    <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-tr from-[#FAD836] to-[#47833C]">
+                    Claim Your New Breedable Lion <span className='text-sm font-normal align-top text-slate-700'></span>
+                    </h1>
                     <div className='pt-12'>
-                      <ClaimLionButton />
+                    <ClaimLionButton />
 
                     </div>
                       
                     </div>
+
+                    <div className="container mx-auto flex justify-center">
+                        <div className="relative w-11/12 brightness-50 -mt-96">
+                            <img src="/lion1.png" alt="Sample Page" role="img" />
+                        </div>
+                    </div>
                 </div>
-            {/* Code block ends */}
-        </div>
         </>
   );
 };
-async function hasWon(id: string) {
-    try {
-      const res = await axios.get(`api/claimPrize/${id}`);
-  
-      return res.data; 
-        // Don't forget to return something   
-    }
-    catch (err) {
-        console.error(err);
-    }
-  }

@@ -229,11 +229,11 @@ async function AddStartingPos(UserPublicKey: string) {
   async function HandleResult(result: number) {
     // initialize data state variable as an empty array
     console.log("Hello");
-    await sleep(12000);
+    await sleep(10500);
     console.log("World!");
 
     if (result == 0) {
-        window.alert("Sorry You Lost!\nTry Again?");
+        window.alert("Sorry You Lost your lion!!\nTry Again?");
         window.location.href='/game';
         return (
             <div></div>
